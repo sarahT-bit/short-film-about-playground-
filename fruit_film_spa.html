@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fruit Short Film Generator 🍎🎬</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #ffe6cc, #fff0f5);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
+    }
+    header {
+      background: #ffb347;
+      color: white;
+      padding: 1rem;
+      font-size: 1.5rem;
+    }
+    #film-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .scene {
+      border: 2px solid #ffa500;
+      border-radius: 10px;
+      padding: 1rem;
+      width: 80%;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    button {
+      background: #ff9800;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #e68a00;
+    }
+  </style>
+</head>
+<body>
+  <header>🍓 AI Fruit Short Film Generator 🎬</header>
+  <main>
+    <button id="generateBtn">Generate Short Film</button>
+    <div id="film-container"></div>
+  </main>
+
+  <script type="module">
+    import OpenAI from "https://cdn.jsdelivr.net/npm/openai@4.37.0/+esm";
+
+    const openai = new OpenAI({
+      apiKey: "YOUR_OPENAI_API_KEY", // <-- Replace with your key
+      dangerouslyAllowBrowser: true
+    });
+
+    const btn = document.getElementById("generateBtn");
+    const container = document.getElementById("film-container");
+
+    async function generateShortFilm() {
+      container.innerHTML = "<p>🎥 Generating your fruity short film... please wait!</p>";
+      btn.disabled = true;
+
+      // 1️⃣ Get a short story about fruits
+      const scriptPrompt = `
+        Write a 5-scene, cheerful, short film about different fruits
+        introducing themselves and teaching kids about their benefits.
+        Each scene should have a short title, description, and narration line.
+      `;
+
+      const scriptResponse = await openai.chat.completions.create({
+        model: "gpt-5",
+        messages: [{ role: "user", content: scriptPrompt }]
+      });
+
+      const script = scriptResponse.choices[0].message.content;
+      const scenes = script.split(/Scene\s*\d*[:\-]*/i).filter(s => s.trim().length > 0);
+
+      container.innerHTML = "";
+
+      // 2️⃣ For each scene, generate an image + narration
+      for (let i = 0; i < scenes.length; i++) {
+        const sceneText = scenes[i].trim();
+        const imagePrompt = `Colorful, cinematic image of this scene: ${sceneText}`;
+        const imageResponse = await openai.images.generate({
+          model: "gpt-image-1",
+          prompt: imagePrompt,
+          size: "512x512"
+        });
+        const imageUrl = imageResponse.data[0].url;
+
+        // Generate voice narration
+        const ttsResponse = await openai.audio.speech.create({
+          model: "gpt-4o-mini-tts",
+          voice: "alloy",
+          input: sceneText
+        });
+        const audioBlob = new Blob([await ttsResponse.arrayBuffer()], { type: "audio/mpeg" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        // Display scene
+        const sceneDiv = document.createElement("div");
+        sceneDiv.className = "scene";
+        sceneDiv.innerHTML = `
+          <h3>🍊 Scene ${i + 1}</h3>
+          <p>${sceneText}</p>
+          <img src="${imageUrl}" alt="Scene ${i + 1} image">
+          <audio controls src="${audioUrl}"></audio>
+        `;
+        container.appendChild(sceneDiv);
+      }
+
+      btn.disabled = false;
+    }
+
+    btn.addEventListener("click", generateShortFilm);
+  </script>
+</body>
+</html>
+
