@@ -3,87 +3,155 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Fruit Symphony 🍉</title>
+<title>Playground Fun 🎠</title>
 <style>
-  * {
-    box-sizing: border-box;
-  }
-
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    margin: 0;
     height: 100vh;
+    overflow: hidden;
+    font-family: "Poppins", sans-serif;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    overflow: hidden;
-    transition: background 1s ease-in-out;
+    background: linear-gradient(to top, #87ceeb 70%, #79d17a 30%);
+    transition: background 1s ease;
   }
 
-  #film {
+  #scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
     text-align: center;
-    color: white;
-    font-size: 3em;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    overflow: hidden;
   }
 
-  .hidden {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-
-  .visible {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .emoji {
-    display: block;
+  .narration {
+    position: absolute;
+    width: 100%;
+    bottom: 10%;
     font-size: 2em;
-    animation: float 2s ease-in-out infinite;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  .visible { opacity: 1; }
+
+  /* Characters */
+  .kid {
+    position: absolute;
+    bottom: 20%;
+    width: 100px;
+    height: 120px;
+    background: #ffe4b5;
+    border-radius: 50% 50% 30% 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    transition: transform 1.5s ease;
+  }
+
+  .kid1 { left: 20%; background: #ffadad; }
+  .kid2 { right: 20%; background: #9ad0ff; }
+
+  /* Animations */
+  @keyframes swing {
+    0%,100% { transform: rotate(5deg); }
+    50% { transform: rotate(-5deg); }
+  }
+
+  @keyframes jump {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-50px); }
+  }
+
+  .swinging { animation: swing 1s infinite ease-in-out; }
+  .jumping { animation: jump 0.8s infinite ease-in-out; }
+
+  /* Sun & scenery */
+  .sun {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #fff176 60%, #fbc02d);
+    border-radius: 50%;
+    box-shadow: 0 0 50px #ffeb3b;
+  }
+
+  .ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 35%;
+    background: #79d17a;
+  }
+
+  .slide {
+    position: absolute;
+    bottom: 20%;
+    left: 45%;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    border-radius: 20px;
+    transform: rotate(45deg);
   }
 </style>
 </head>
 <body>
-  <div id="film"></div>
+  <div id="scene">
+    <div class="sun"></div>
+    <div class="ground"></div>
+    <div class="slide"></div>
+    <div class="kid kid1">🧒</div>
+    <div class="kid kid2">👧</div>
+    <div id="narration" class="narration"></div>
+  </div>
 
   <script>
-    const scenes = [
-      { bg: "linear-gradient(135deg, #ff9a9e, #fad0c4)", text: "🍎 Apple!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #f6d365, #fda085)", text: "🍌 Banana!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #a1c4fd, #c2e9fb)", text: "🍇 Grape!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #fbc2eb, #a6c1ee)", text: "🍓 Strawberry!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #84fab0, #8fd3f4)", text: "🥝 Kiwi!", color: "#fff" },
-    ];
+    const narration = document.getElementById("narration");
+    const kid1 = document.querySelector(".kid1");
+    const kid2 = document.querySelector(".kid2");
+    const body = document.body;
 
-    const film = document.getElementById("film");
+    const scenes = [
+      { text: "A sunny day at the playground ☀️", bg: "linear-gradient(to top, #87ceeb 70%, #79d17a 30%)" },
+      { text: "Two friends meet to play!", bg: "linear-gradient(to top, #a0e9ff 70%, #b6fcb6 30%)" },
+      { text: "They run to the swings! 🎠", action: () => { kid1.classList.add("swinging"); kid2.classList.add("swinging"); } },
+      { text: "Now it’s time to jump and laugh! 😂", bg: "linear-gradient(to top, #fbc2eb 70%, #a6c1ee 30%)", action: () => {
+          kid1.classList.remove("swinging");
+          kid2.classList.remove("swinging");
+          kid1.classList.add("jumping");
+          kid2.classList.add("jumping");
+      }},
+      { text: "Playtime ends with a big smile 😊", bg: "linear-gradient(to top, #ffd6a5 70%, #fdffb6 30%)", action: () => {
+          kid1.classList.remove("jumping");
+          kid2.classList.remove("jumping");
+          kid1.style.transform = "translateX(50px)";
+          kid2.style.transform = "translateX(-50px)";
+      }},
+    ];
 
     let i = 0;
     function showScene() {
       const scene = scenes[i];
-      document.body.style.background = scene.bg;
-      film.classList.remove("visible");
-      film.classList.add("hidden");
-
+      narration.classList.remove("visible");
+      body.style.background = scene.bg || body.style.background;
       setTimeout(() => {
-        film.innerHTML = `<span class="emoji">${scene.text}</span>`;
-        film.style.color = scene.color;
-        film.classList.remove("hidden");
-        film.classList.add("visible");
+        narration.textContent = scene.text;
+        narration.classList.add("visible");
+        if (scene.action) scene.action();
       }, 500);
-
-      i = (i + 1) % scenes.length;
+      i++;
+      if (i < scenes.length) setTimeout(showScene, 3000);
+      else setTimeout(() => narration.textContent = "The End 🎬", 3000);
     }
 
     showScene();
-    setInterval(showScene, 2000); // 2 seconds per fruit → 10 seconds total
   </script>
 </body>
 </html>
