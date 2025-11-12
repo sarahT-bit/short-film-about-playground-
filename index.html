@@ -9,7 +9,7 @@
     margin: 0;
     overflow: hidden;
     height: 100vh;
-    background: linear-gradient(to top, #6ec1e4 60%, #aee1f9);
+    background: linear-gradient(to top, #78d0ff 65%, #c5f0ff);
     position: relative;
   }
 
@@ -22,23 +22,23 @@
     background: #8dc26f;
   }
 
-  /* Playground structure */
-  .swing {
+  /* Playground background image */
+  .playground-bg {
     position: absolute;
     bottom: 35vh;
-    left: 55%;
-    width: 150px;
-    height: 200px;
-    background: url('https://cdn.pixabay.com/photo/2017/01/31/13/14/swing-2029260_960_720.png') 
-                no-repeat center/contain;
+    left: 0;
+    width: 100%;
+    height: 65vh;
+    background: url('https://cdn.pixabay.com/photo/2017/02/14/03/03/playground-2060478_1280.png') 
+                no-repeat center bottom/contain;
   }
 
-  /* Kids */
+  /* Kids (foreground animated) */
   .kid {
     position: absolute;
-    bottom: 35vh;
     width: 80px;
     height: 120px;
+    bottom: 35vh;
     background-size: contain;
     background-repeat: no-repeat;
   }
@@ -56,22 +56,39 @@
   }
 
   @keyframes run1 {
-    0% { left: -100px; }
-    25% { left: 25%; }
-    50% { left: 45%; }
-    75% { left: 55%; }
-    100% { left: 60%; }
+    0% { left: -100px; bottom: 35vh; }
+    30% { left: 30%; }
+    50% { left: 50%; }
+    70% { left: 55%; }
+    100% { left: 65%; }
   }
 
   @keyframes run2 {
-    0% { left: -180px; }
-    25% { left: 15%; }
-    50% { left: 40%; }
-    75% { left: 52%; }
-    100% { left: 57%; }
+    0% { left: -180px; bottom: 35vh; }
+    30% { left: 20%; }
+    50% { left: 45%; }
+    70% { left: 52%; }
+    100% { left: 60%; }
   }
 
-  /* Text overlay */
+  /* Static kids already playing */
+  .kid3 {
+    position: absolute;
+    left: 70%;
+    bottom: 35vh;
+    width: 90px;
+    height: 130px;
+    background: url('https://cdn.pixabay.com/photo/2014/04/03/10/00/girl-309434_1280.png') 
+                no-repeat center/contain;
+    animation: wave 1.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes wave {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(5deg); }
+  }
+
+  /* Caption text */
   .caption {
     position: absolute;
     top: 20px;
@@ -89,39 +106,17 @@
     100% { opacity: 0; }
   }
 
-  /* Swing animation (small seat motion) */
-  .swing::after {
-    content: '';
+  /* Sun */
+  .sun {
     position: absolute;
-    bottom: 10px;
-    left: 50%;
-    width: 80px;
-    height: 15px;
-    background: #333;
-    border-radius: 5px;
-    transform: translateX(-50%);
-    animation: swing 3s ease-in-out infinite alternate;
-  }
+    top: 5%;
+    right: 10%;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at center, #fff07d 30%, #ffce00 70%);
+    border-radius: 50%;
+    box-shadow:
 
-  @keyframes swing {
-    0% { transform: translateX(-50%) rotate(-10deg); }
-    100% { transform: translateX(-50%) rotate(10deg); }
-  }
-</style>
-</head>
-<body>
-  <div class="caption">Playground Joy</div>
-  <div class="ground"></div>
-  <div class="swing"></div>
-  <div class="kid kid1"></div>
-  <div class="kid kid2"></div>
-
-  <script>
-    // Optional: Add sound or caption triggers
-    setTimeout(() => console.log("🎵 Laughter, swing creaks, playground ambience"), 2000);
-  </script>
-</body>
-</html>
 
 
 
