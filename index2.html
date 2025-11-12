@@ -1,90 +1,226 @@
-# This one is for the short film (really animation about fruit) 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Fruit Symphony 🍉</title>
+<title>Playground Adventures 🎠</title>
 <style>
-  * {
-    box-sizing: border-box;
-  }
-
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(to top, #a0e9ff 70%, #b6fcb6 30%);
+    overflow: hidden;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: #fff;
+    transition: background 1.5s ease;
+  }
+
+  #stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    transition: background 1s ease-in-out;
   }
 
-  #film {
+  .sun {
+    position: absolute;
+    top: 8%;
+    left: 10%;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #fff176 60%, #fbc02d);
+    border-radius: 50%;
+    box-shadow: 0 0 60px #fff59d;
+    animation: shine 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes shine {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  .ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 35%;
+    background: #79d17a;
+  }
+
+  /* Simple playground structures */
+  .swing {
+    position: absolute;
+    bottom: 35%;
+    left: 40%;
+    width: 160px;
+    height: 120px;
+  }
+
+  .frame {
+    position: absolute;
+    width: 8px;
+    height: 120px;
+    background: #654321;
+  }
+
+  .frame.left { left: 0; }
+  .frame.right { right: 0; }
+
+  .rope {
+    position: absolute;
+    top: 0;
+    width: 4px;
+    height: 60px;
+    background: #d2b48c;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .seat {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 60px;
+    height: 10px;
+    background: #8b0000;
+    transform: translateX(-50%);
+    border-radius: 5px;
+  }
+
+  /* Characters */
+  .kid {
+    position: absolute;
+    bottom: 35%;
+    width: 60px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .head {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffd6a5;
+  }
+
+  .body {
+    width: 20px;
+    height: 60px;
+    background: #ff9a9e;
+    border-radius: 10px;
+  }
+
+  .kid.boy .body { background: #9ad0ff; }
+
+  /* Actions */
+  @keyframes run {
+    0%,100% { transform: translateX(0); }
+    50% { transform: translateX(20px); }
+  }
+
+  @keyframes swingMotion {
+    0%,100% { transform: rotate(10deg); }
+    50% { transform: rotate(-10deg); }
+  }
+
+  @keyframes jump {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-40px); }
+  }
+
+  .running { animation: run 0.5s infinite linear; }
+  .swinging { animation: swingMotion 1.2s infinite ease-in-out; transform-origin: top center; }
+  .jumping { animation: jump 1s infinite ease-in-out; }
+
+  /* Text overlays */
+  .caption {
+    position: absolute;
+    width: 100%;
+    bottom: 10%;
     text-align: center;
-    color: white;
-    font-size: 3em;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-  }
-
-  .hidden {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-
-  .visible {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .emoji {
-    display: block;
     font-size: 2em;
-    animation: float 2s ease-in-out infinite;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 1s ease;
   }
+
+  .visible { opacity: 1; }
 </style>
 </head>
 <body>
-  <div id="film"></div>
+  <div id="stage">
+    <div class="sun"></div>
+    <div class="ground"></div>
+    <div class="swing">
+      <div class="frame left"></div>
+      <div class="frame right"></div>
+      <div class="rope"></div>
+      <div class="seat"></div>
+    </div>
+
+    <div class="kid girl" id="kid1" style="left:25%;">
+      <div class="head"></div>
+      <div class="body"></div>
+    </div>
+
+    <div class="kid boy" id="kid2" style="left:60%;">
+      <div class="head"></div>
+      <div class="body"></div>
+    </div>
+
+    <div class="caption" id="caption"></div>
+  </div>
 
   <script>
-    const scenes = [
-      { bg: "linear-gradient(135deg, #ff9a9e, #fad0c4)", text: "🍎 Apple!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #f6d365, #fda085)", text: "🍌 Banana!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #a1c4fd, #c2e9fb)", text: "🍇 Grape!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #fbc2eb, #a6c1ee)", text: "🍓 Strawberry!", color: "#fff" },
-      { bg: "linear-gradient(135deg, #84fab0, #8fd3f4)", text: "🥝 Kiwi!", color: "#fff" },
+    const captions = [
+      "A sunny day at the playground ☀️",
+      "Two friends run and laugh together!",
+      "They swing high into the sky 🎠",
+      "Jumping and playing with joy!",
+      "The sun sets — what a fun day! 🌅"
     ];
 
-    const film = document.getElementById("film");
+    const backgrounds = [
+      "linear-gradient(to top, #a0e9ff 70%, #b6fcb6 30%)",
+      "linear-gradient(to top, #fbc2eb 70%, #a6c1ee 30%)",
+      "linear-gradient(to top, #ffd6a5 70%, #fdffb6 30%)",
+      "linear-gradient(to top, #84fab0 70%, #8fd3f4 30%)",
+      "linear-gradient(to top, #ff9a9e 70%, #fad0c4 30%)"
+    ];
 
+    const captionEl = document.getElementById("caption");
+    const kid1 = document.getElementById("kid1");
+    const kid2 = document.getElementById("kid2");
+    const body = document.body;
     let i = 0;
-    function showScene() {
-      const scene = scenes[i];
-      document.body.style.background = scene.bg;
-      film.classList.remove("visible");
-      film.classList.add("hidden");
 
+    function nextScene() {
+      captionEl.classList.remove("visible");
       setTimeout(() => {
-        film.innerHTML = `<span class="emoji">${scene.text}</span>`;
-        film.style.color = scene.color;
-        film.classList.remove("hidden");
-        film.classList.add("visible");
-      }, 500);
+        captionEl.textContent = captions[i];
+        captionEl.classList.add("visible");
+      }, 300);
 
-      i = (i + 1) % scenes.length;
+      body.style.background = backgrounds[i];
+
+      kid1.classList.remove("running", "swinging", "jumping");
+      kid2.classList.remove("running", "swinging", "jumping");
+
+      if (i === 1) { kid1.classList.add("running"); kid2.classList.add("running"); }
+      if (i === 2) { kid1.classList.add("swinging"); kid2.classList.add("swinging"); }
+      if (i === 3) { kid1.classList.add("jumping"); kid2.classList.add("jumping"); }
+
+      i++;
+      if (i < captions.length) setTimeout(nextScene, 2500);
+      else setTimeout(() => captionEl.textContent = "The End 🎬", 2500);
     }
 
-    showScene();
-    setInterval(showScene, 2000); // 2 seconds per fruit → 10 seconds total
+    nextScene();
   </script>
 </body>
 </html>
