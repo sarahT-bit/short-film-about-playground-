@@ -9,7 +9,7 @@
     margin: 0;
     overflow: hidden;
     height: 100vh;
-    background: linear-gradient(to top, #78d0ff 65%, #c5f0ff);
+    background: linear-gradient(to top, #6ec1e4 60%, #aee1f9);
     position: relative;
   }
 
@@ -18,69 +18,68 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 35vh;
-    background: #8dc26f;
+    height: 30vh;
+    background: #7fc97f;
   }
 
-  /* Playground background image */
-  .playground-bg {
+  /* Playground equipment */
+  .playground {
     position: absolute;
-    bottom: 35vh;
-    left: 0;
-    width: 100%;
-    height: 65vh;
-    background: url('https://cdn.pixabay.com/photo/2017/02/14/03/03/playground-2060478_1280.png') 
-                no-repeat center bottom/contain;
+    bottom: 30vh;
+    left: 10%;
+    width: 80%;
+    height: 40vh;
+    background: url('https://cdn.pixabay.com/photo/2016/11/29/05/08/playground-1869406_1280.png')
+                no-repeat center bottom / contain;
   }
 
-  /* Kids (foreground animated) */
+  /* Kids */
   .kid {
     position: absolute;
+    bottom: 30vh;
     width: 80px;
     height: 120px;
-    bottom: 35vh;
     background-size: contain;
     background-repeat: no-repeat;
   }
 
   .kid1 {
-    left: -100px;
+    left: -120px;
     background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/01/boy-309435_1280.png');
     animation: run1 10s linear forwards;
   }
 
   .kid2 {
-    left: -180px;
+    left: -200px;
     background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/00/girl-309433_1280.png');
     animation: run2 10s linear forwards;
   }
 
+  .kid3 {
+    left: 70%;
+    bottom: 30vh;
+    width: 90px;
+    height: 130px;
+    background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/00/girl-309434_1280.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: wave 1.5s ease-in-out infinite alternate;
+  }
+
   @keyframes run1 {
-    0% { left: -100px; bottom: 35vh; }
-    30% { left: 30%; }
-    50% { left: 50%; }
-    70% { left: 55%; }
+    0% { left: -120px; }
+    30% { left: 25%; }
+    60% { left: 45%; }
+    80% { left: 55%; }
     100% { left: 65%; }
   }
 
   @keyframes run2 {
-    0% { left: -180px; bottom: 35vh; }
-    30% { left: 20%; }
-    50% { left: 45%; }
-    70% { left: 52%; }
+    0% { left: -200px; }
+    30% { left: 15%; }
+    60% { left: 40%; }
+    80% { left: 50%; }
     100% { left: 60%; }
-  }
-
-  /* Static kids already playing */
-  .kid3 {
-    position: absolute;
-    left: 70%;
-    bottom: 35vh;
-    width: 90px;
-    height: 130px;
-    background: url('https://cdn.pixabay.com/photo/2014/04/03/10/00/girl-309434_1280.png') 
-                no-repeat center/contain;
-    animation: wave 1.5s ease-in-out infinite alternate;
   }
 
   @keyframes wave {
@@ -88,7 +87,25 @@
     100% { transform: rotate(5deg); }
   }
 
-  /* Caption text */
+  /* Sun */
+  .sun {
+    position: absolute;
+    top: 5%;
+    right: 8%;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at center, #fff07d 30%, #ffce00 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 50px 15px #fff07d;
+    animation: shine 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes shine {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.1); opacity: 0.9; }
+  }
+
+  /* Caption */
   .caption {
     position: absolute;
     top: 20px;
@@ -105,17 +122,23 @@
     30%, 80% { opacity: 1; }
     100% { opacity: 0; }
   }
+</style>
+</head>
+<body>
+  <div class="caption">Playground Joy</div>
+  <div class="sun"></div>
+  <div class="ground"></div>
+  <div class="playground"></div>
+  <div class="kid kid1"></div>
+  <div class="kid kid2"></div>
+  <div class="kid3"></div>
 
-  /* Sun */
-  .sun {
-    position: absolute;
-    top: 5%;
-    right: 10%;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle at center, #fff07d 30%, #ffce00 70%);
-    border-radius: 50%;
-    box-shadow:
+  <script>
+    // Optional: ambient sound (console simulation)
+    setTimeout(() => console.log("🎵 Laughter, swings, and birds chirping"), 2000);
+  </script>
+</body>
+</html>
 
 
 
