@@ -3,142 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Playground Joy</title>
+<title>Playground Short Film</title>
 <style>
+  /* Basic reset */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
-    margin: 0;
+    background: #87CEEB; /* Sky blue background */
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
-    background: linear-gradient(to top, #6ec1e4 60%, #aee1f9);
+    font-family: sans-serif;
+  }
+
+  .screen {
+    width: 1280px; /* 16:9 ratio */
+    height: 720px;
+    background: linear-gradient(to top, #7CFC00, #87CEEB); /* Grass + sky */
     position: relative;
+    overflow: hidden;
+    border: 4px solid #333;
+    border-radius: 8px;
   }
 
-  /* Ground */
-  .ground {
+  /* Swing */
+  .swing {
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 30vh;
-    background: #7fc97f;
-  }
-
-  /* Playground equipment */
-  .playground {
-    position: absolute;
-    bottom: 30vh;
-    left: 10%;
-    width: 80%;
-    height: 40vh;
-    background: url('https://cdn.pixabay.com/photo/2016/11/29/05/08/playground-1869406_1280.png')
-                no-repeat center bottom / contain;
-  }
-
-  /* Kids */
-  .kid {
-    position: absolute;
-    bottom: 30vh;
-    width: 80px;
+    left: 25%;
+    bottom: 20%;
+    width: 60px;
     height: 120px;
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: #8B4513;
+    border-radius: 10px;
+    transform-origin: top center;
+    animation: swingAnim 2s ease-in-out infinite alternate;
   }
 
-  .kid1 {
-    left: -120px;
-    background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/01/boy-309435_1280.png');
-    animation: run1 10s linear forwards;
+  @keyframes swingAnim {
+    0% { transform: rotate(-20deg); }
+    50% { transform: rotate(20deg); }
+    100% { transform: rotate(-20deg); }
   }
 
-  .kid2 {
-    left: -200px;
-    background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/00/girl-309433_1280.png');
-    animation: run2 10s linear forwards;
-  }
-
-  .kid3 {
-    left: 70%;
-    bottom: 30vh;
-    width: 90px;
-    height: 130px;
-    background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/00/girl-309434_1280.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: wave 1.5s ease-in-out infinite alternate;
-  }
-
-  @keyframes run1 {
-    0% { left: -120px; }
-    30% { left: 25%; }
-    60% { left: 45%; }
-    80% { left: 55%; }
-    100% { left: 65%; }
-  }
-
-  @keyframes run2 {
-    0% { left: -200px; }
-    30% { left: 15%; }
-    60% { left: 40%; }
-    80% { left: 50%; }
-    100% { left: 60%; }
-  }
-
-  @keyframes wave {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(5deg); }
-  }
-
-  /* Sun */
-  .sun {
+  .child {
     position: absolute;
-    top: 5%;
-    right: 8%;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle at center, #fff07d 30%, #ffce00 70%);
+    width: 50px;
+    height: 70px;
+    background: #FFD700; /* Golden child silhouette */
     border-radius: 50%;
-    box-shadow: 0 0 50px 15px #fff07d;
-    animation: shine 4s ease-in-out infinite alternate;
   }
 
-  @keyframes shine {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.1); opacity: 0.9; }
+  .leo {
+    bottom: 20%;
+    left: 24%;
   }
 
-  /* Caption */
-  .caption {
+  .maya {
+    bottom: 20%;
+    left: 25%;
+    animation: swingChild 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes swingChild {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-40px) rotate(20deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+
+  /* Slide */
+  .slide {
     position: absolute;
-    top: 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 2rem;
-    color: white;
-    text-shadow: 2px 2px 5px #000;
-    animation: captionFade 10s ease-in-out forwards;
+    bottom: 15%;
+    right: 20%;
+    width: 120px;
+    height: 80px;
+    background: #FF4500;
+    border-radius: 10px;
+    transform: rotate(-20deg);
+    animation: slideAnim 3s ease-in-out infinite alternate;
   }
 
-  @keyframes captionFade {
-    0%, 20% { opacity: 0; }
-    30%, 80% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-</style>
-</head>
-<body>
-  <div class="caption">Playground Joy</div>
-  <div class="sun"></div>
-  <div class="ground"></div>
-  <div class="playground"></div>
-  <div class="kid kid1"></div>
-  <div class="kid kid2"></div>
-  <div class="kid3"></div>
+  @keyframes slideAnim {
+    0% { transform: transl
 
-  <script>
-    // Optional: ambient sound (console simulation)
-    setTimeout(() => console.log("🎵 Laughter, swings, and birds chirping"), 2000);
-  </script>
-</body>
-</html>
 
 
 
