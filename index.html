@@ -1,56 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>10-Second Playground Short Film</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f8ff;
-      color: #333;
-      padding: 20px;
-      line-height: 1.6;
-    }
-    h1 {
-      text-align: center;
-      color: #0066cc;
-    }
-    .scene {
-      background-color: #ffffff;
-      border: 2px solid #0066cc;
-      border-radius: 8px;
-      padding: 15px;
-      margin: 20px 0;
-    }
-    .character {
-      font-weight: bold;
-      color: #cc3300;
-    }
-    .action {
-      font-style: italic;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playground Animation</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #87CEEB; /* Sky blue */
+  }
+  canvas {
+    display: block;
+    background: #c2f0c2; /* Grass */
+  }
+</style>
 </head>
 <body>
-  <h1>10-Second Playground Short Film</h1>
+<canvas id="playground"></canvas>
+<script>
+const canvas = document.getElementById('playground');
+const ctx = canvas.getContext('2d');
 
-  <div class="scene">
-    <p class="action">EXT. PLAYGROUND – DAY</p>
-    <p>A sunny playground with a <strong>swing</strong>, a <strong>slide</strong>, and a <strong>climbing frame</strong>.</p>
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    <p class="character">LUCY (6)</p>
-    <p class="action">climbs the ladder of the slide; Sam pushes her gently.</p>
+const groundY = canvas.height - 100;
 
-    <p class="character">SAM (7)</p>
-    <p class="action">runs to the swing, jumps on, and pumps his legs.</p>
+// Playground equipment positions
+const slide = {x: canvas.width*0.7, y: groundY-150, width: 100, height: 150};
+const swing = {x: canvas.width*0.3, y: groundY-100, width: 20, height: 100};
 
-    <p class="action">Lucy slides down, her pigtails flying. They both grin, sharing a joyful look.</p>
+// Kids initial positions
+let lucy = {x: slide.x + slide.width/2, y: slide.y, size: 20, sliding: true};
+let sam = {x: swing.x, y: groundY-50, size: 20, swinging: true, angle: 0, dir: 1};
 
-    <p class="action">FADE OUT.</p>
-  </div>
+// Animation timer
+let startTime = null;
+
+function drawPlayground() {
+  // Ground
+  ctx.fillStyle = "#4CAF50";
+  ctx.fillRect(0, groundY, canvas.width, canvas.height-groundY);
+
+  // Slide
+  ctx.fillStyle = "#FFA500";
+  ctx.beginPath();
+  ctx.moveTo(slide.x, slide.y);
+  ctx.lineTo(slide.x + slide.width, slide.y);
+  ctx.lineTo(slide.x + slide.width/2, slide.y + slide.height);
+  ctx.closePath();
+  ctx.fill();
+
+  // Swing
+  ctx.strokeStyle = "#8B4513";
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(swing.x, swing.y);
+  ctx.lineTo(swing.x, swing.y + swing.height);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(swing.x + swing.width, swing.y);
+  ctx.lineTo(swing.x + swing.width, swing.y + swing.height);
+  ctx.stroke();
+  ctx.fillStyle = "#0000FF";
+  ctx.fillRect(swing.x - 5, swing.y + swing.height, swing.width + 10, 10);
+}
+
+function drawKid(kid, color) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(kid.x, kid.y, kid.size, 0, Math.PI*2);
+  ctx.fill();
+}
+
+function animate(timestamp) {
+  if (!startTime) startTime = timestamp;
+  const elapsed = (timestamp - startTime)/1000; // seconds
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawPlayground();
+
+  // Lucy sliding down (2 seconds)
+  if (elapsed < 2) {
+    lucy.y += 2;
+    lucy.x -= 0.5;
+  }
+
+  // Sam swinging back and forth
+  if (elapsed < 10) {
+    sam.angle += 0.05 * sam.dir;
+    if (sam.angle > 0.5 || sam.angle < -0.5) sam.dir *= -1;
+    sam.x = swing.x + swing.width/2 + Math.sin(sam.angle)*50;
+    sam.y = groundY - 50 - Math.cos(sam.angle)*30;
+  }
+
+  drawKid(lucy, "#FF69B4"); // Pink Lucy
+  drawKid(sam, "#1E90FF");   // Blue Sam
+
+  if (elapsed < 10) {
+    requestAnimationFrame(animate);
+  }
+}
+
+requestAnimationFrame(animate);
+</script>
 </body>
 </html>
+
 
 
 
